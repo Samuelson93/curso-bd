@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Database
 {
-    public class Db
+    public static class Db
     {
-        private SqlConnection conexion = null;
-        public void Conectar()
+        private static SqlConnection conexion = null;
+        public static void Conectar()
         {
           
 
@@ -81,12 +81,12 @@ namespace Database
 
         }
 
-        public bool EstaLaConexionAbierta()
+        public static bool EstaLaConexionAbierta()
         {
             return conexion.State == ConnectionState.Open;
         }
 
-        public void Desconectar()
+        public static void Desconectar()
         { 
             if (this.conexion != null)
             {
@@ -98,7 +98,7 @@ namespace Database
             
         }
 
-        public List<Usuario> DameLosUsuarios()
+        public static List<Usuario> DameLosUsuarios()
         {
             List<Usuario> usuarios = null;
             //Preparo la consulta SQL para obtener los usuarios
@@ -139,7 +139,7 @@ namespace Database
 
         }
 
-        public void InsertarUsuario(Usuario usuario)
+        public static void InsertarUsuario(Usuario usuario)
         {
 
 
@@ -179,7 +179,7 @@ namespace Database
 
             }
 
-        public void EliminarUsuario(string email)
+        public static void EliminarUsuario(string email)
         {
             //Preparo la consulta SQL insertar al nuevo usuario
             string consultaSQL = @"DELETE FROM Users  
@@ -191,7 +191,7 @@ namespace Database
             comando.ExecuteNonQuery();
         }
 
-        public void ActualizarUsuario(Usuario usuario)
+        public static void ActualizarUsuario(Usuario usuario)
         {
             //Preparo la consulta SQL insertar al nuevo usuario
             string consultaSQL = @"UPDATE Users ";
@@ -207,7 +207,7 @@ namespace Database
             
             //Preparo un comando para ejecutar a la base de datos
 
-            SqlCommand comando = new SqlCommand(consultaSQL, this.conexion);
+            SqlCommand comando = new SqlCommand(consultaSQL,conexion);
             //Recojo los datos 
             comando.ExecuteNonQuery();
         }
