@@ -8,16 +8,45 @@ namespace Database
         static void Main(string[] args)
         {
             Console.WriteLine("Conectando a la base de datos");
+            Db.Conectar();
 
-           
+            if (Db.EstaLaConexionAbierta())
+            {
+                //List<MarcasNCoches> lista = Db.DameListaMarcasNCoches();
+                //lista.ForEach(elemento => 
+                //{
+                //    Console.WriteLine(
+                //            " Marca: " + elemento.marca
+                //            +
+                //            " Nº de coches: " + elemento.nCoches
+                //            );
+                //});
+
+                List<Coche> listaCoches = Db.DameListaCochesConProcedimientoAlmacenado();
+                listaCoches.ForEach(coche =>
+                {
+                    Console.WriteLine(
+                        @"Matrícula: " + coche.matricula +
+                        " Marca: " + coche.marca.denominacion
+
+                        );
+                });
+            }
+            Db.Desconectar();
+            Console.ReadKey();
+        }
+
+        public static void ObtenerUsuarios()
+        {
+            Console.WriteLine("Conectando a la base de datos");
             Db.Conectar();
 
             if (Db.EstaLaConexionAbierta())
             {
                 Usuario nuevoUsuario = new Usuario()
                 {
-                    //hiddenId = 0, No podemos pasarle estos datos porque se generan por defecto.
-                    //id ="",
+                    //hiddenId = 0,
+                    //id = "",
                     firstName = "MANOLO",
                     lastName = "EL DEL BOMBO",
                     email = "kk3@kk.com",
@@ -32,44 +61,37 @@ namespace Database
                 Console.WriteLine("Usuario insertado, pulsa una tecla para continuar...");
                 Console.ReadKey();
 
-                nuevoUsuario.firstName += "modificado!!";
+                nuevoUsuario.firstName += " modificado!!";
                 Db.ActualizarUsuario(nuevoUsuario);
-                Console.WriteLine("Usuario Actualizado, pulsa una tecla para continuar");
+                Console.WriteLine("Usuario actualizado, pulsa una tecla para continuar...");
                 Console.ReadKey();
 
                 Db.EliminarUsuario("kk3@kk.com");
-                Console.WriteLine("Usuario Elmininado, pulsa una tecla para cuntinuar");
+                Console.WriteLine("Usuario eliminado, pulsa una tecla para continuar...");
 
                 List<Usuario> listaUsuarios = Db.DameLosUsuarios();
                 listaUsuarios.ForEach(usuario =>
                 {
                     Console.WriteLine(
-                        "Nombre: " + usuario.firstName 
-                        +
-                        "Apellidos: " + usuario.lastName
-                        +
-                         "id: " + usuario.id
-                        +
-                         "email: " + usuario.id
-                        +
-                         "password: " + usuario.password
-                        +
-                         "photoUrl: " + usuario.photoUrl
-                        +
-                         "seachPreferences: " + usuario.searchPreferences
-                        +
-                        "status: " + usuario.status
-                        +
-                         "deleted: " + usuario.deleted
-                        +
-                         "isAdmin: " + usuario.isAdmin
-                        );
+                            " hiddenId: " + usuario.hiddenId
+                            +
+                            " id: " + usuario.id
+                            +
+                            " email: " + usuario.email
+                            +
+                            " password: " + usuario.password
+                            +
+                            " nombre: " + usuario.firstName
+                            +
+                            " Apellidos: " + usuario.lastName
+                            +
+                            " photoUrl: " + usuario.photoUrl
+                            );
                 });
             }
             Db.Desconectar();
             Console.ReadKey();
-        }
 
-       
+        }
     }
 }
