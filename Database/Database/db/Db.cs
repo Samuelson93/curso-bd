@@ -162,6 +162,9 @@ namespace Database
                 coche.marca = new Marca();
                 coche.marca.id = (long)reader["idMarca"];
                 coche.marca.denominacion = reader["denominacionMarca"].ToString();
+                coche.tipoCombustible = new TipoCombustible();
+                coche.tipoCombustible.id = (long)reader["idTiposCombustible"];
+                coche.tipoCombustible.denominacion = reader["denominacionTipoCombustible"].ToString();
                 // AÑADO EL COCHE A LA LISTA DE RESULTADOS
                 resultados.Add(coche);
 

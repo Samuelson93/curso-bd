@@ -27,7 +27,8 @@ namespace Database
                 {
                     Console.WriteLine(
                         @"Matrícula: " + coche.matricula +
-                        " Marca: " + coche.marca.denominacion
+                        " Marca: " + coche.marca.denominacion +
+                        " Combustible: " + coche.tipoCombustible.denominacion
 
                         );
                 });
