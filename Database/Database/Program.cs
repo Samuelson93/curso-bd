@@ -26,9 +26,10 @@ namespace Database
                 listaCoches.ForEach(coche =>
                 {
                     Console.WriteLine(
-                        @"Matrícula: " + coche.matricula +
-                        " Marca: " + coche.marca.denominacion +
-                        " Combustible: " + coche.tipoCombustible.denominacion
+                        
+                        @" Marca: " + coche.marca.denominacion +
+                        " Matrícula: " + coche.matricula +
+                        " NPlazas: " + coche.nPlazas
 
                         );
                 });

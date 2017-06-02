@@ -135,13 +135,51 @@ namespace Database
             return resultados;
         }
 
+        //public static List<Coche> DameListaCochesConProcedimientoAlmacenado()
+        //{
+        //    // CREO EL OBJETO EN EL QUE SE DEVOLVERÁN LOS RESULTADOS
+        //    List<Coche> resultados = new List<Coche>();
+
+        //    // PREPARO LA LLAMADA AL PROCEDIMIENTO ALMACENADO
+        //    string procedimientoAEjecutar = "dbo.GET_COCHE_POR_MARCA";
+
+        //    // PREPARAMOS EL COMANDO PARA EJECUTAR EL PROCEDIMIENTO ALMACENADO
+        //    SqlCommand comando = new SqlCommand(procedimientoAEjecutar, conexion);
+        //    comando.CommandType = CommandType.StoredProcedure;
+        //    // EJECUTO EL COMANDO
+        //    SqlDataReader reader = comando.ExecuteReader();
+        //    // RECORRO EL RESULTADO Y LO PASO A LA VARIABLE A DEVOLVER
+        //    while (reader.Read())
+        //    {
+        //        // CREO EL COCHE
+        //        Coche coche = new Coche();
+        //        coche.id = (long)reader["id"];
+        //        coche.matricula = reader["matricula"].ToString();
+        //        coche.color = reader["color"].ToString();
+        //        coche.cilindrada = (decimal)reader["cilindrada"];
+        //        coche.nPlazas = (short)reader["nPlazas"];
+        //        coche.fechaMatriculacion = (DateTime)reader["fechaMatriculacion"];
+        //        coche.marca = new Marca();
+        //        coche.marca.id = (long)reader["idMarca"];
+        //        coche.marca.denominacion = reader["denominacionMarca"].ToString();
+        //        coche.tipoCombustible = new TipoCombustible();
+        //        coche.tipoCombustible.id = (long)reader["idTiposCombustible"];
+        //        coche.tipoCombustible.denominacion = reader["denominacionTipoCombustible"].ToString();
+        //        // AÑADO EL COCHE A LA LISTA DE RESULTADOS
+        //        resultados.Add(coche);
+
+        //    }
+
+        //    return resultados;
+        //}
+
         public static List<Coche> DameListaCochesConProcedimientoAlmacenado()
         {
             // CREO EL OBJETO EN EL QUE SE DEVOLVERÁN LOS RESULTADOS
             List<Coche> resultados = new List<Coche>();
 
             // PREPARO LA LLAMADA AL PROCEDIMIENTO ALMACENADO
-            string procedimientoAEjecutar = "dbo.GET_COCHE_POR_MARCA";
+            string procedimientoAEjecutar = "dbo.GET_COCHE_POR_NPLAZAS";
 
             // PREPARAMOS EL COMANDO PARA EJECUTAR EL PROCEDIMIENTO ALMACENADO
             SqlCommand comando = new SqlCommand(procedimientoAEjecutar, conexion);
@@ -155,16 +193,11 @@ namespace Database
                 Coche coche = new Coche();
                 coche.id = (long)reader["id"];
                 coche.matricula = reader["matricula"].ToString();
-                coche.color = reader["color"].ToString();
-                coche.cilindrada = (decimal)reader["cilindrada"];
-                coche.nPlazas = (short)reader["nPlazas"];
-                coche.fechaMatriculacion = (DateTime)reader["fechaMatriculacion"];
+                coche.nPlazas = (short)reader["nPlazas"];              
                 coche.marca = new Marca();
                 coche.marca.id = (long)reader["idMarca"];
                 coche.marca.denominacion = reader["denominacionMarca"].ToString();
-                coche.tipoCombustible = new TipoCombustible();
-                coche.tipoCombustible.id = (long)reader["idTiposCombustible"];
-                coche.tipoCombustible.denominacion = reader["denominacionTipoCombustible"].ToString();
+              
                 // AÑADO EL COCHE A LA LISTA DE RESULTADOS
                 resultados.Add(coche);
 
