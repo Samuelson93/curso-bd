@@ -44,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="db\Db.cs" />
+    <Compile Include="Modelo\Coche.cs" />
+    <Compile Include="Modelo\Marca.cs" />
+    <Compile Include="Modelo\MarcasNCoches.cs" />
+    <Compile Include="Modelo\TipoCombustible.cs" />
     <Compile Include="Modelo\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
