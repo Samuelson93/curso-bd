@@ -46,6 +46,7 @@
             success: function (respuesta) {
                 //debugger;
                 console.log(respuesta);
+                GetMarcas();
             },
             error: function (respuesta) {
                 console.log(respuesta);
