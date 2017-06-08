@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Database
+namespace ApiCarRental
 {
     public static class Db
     {
@@ -69,7 +69,7 @@ namespace Database
 
         public static void Desconectar()
         {
-            if (conexion != null)
+            if (conexion !=null)
             {
                 if (conexion.State != ConnectionState.Closed)
                 {
@@ -97,7 +97,7 @@ namespace Database
                     hiddenId = int.Parse(reader["hiddenId"].ToString()),
                     id = reader["id"].ToString(),
                     email = reader["email"].ToString(),
-                    password = reader["password"].ToString(),
+                    password= reader["password"].ToString(),
                     firstName = reader["firstName"].ToString(),
                     lastName = reader["lastName"].ToString(),
                     photoUrl = reader["photoUrl"].ToString(),
@@ -146,6 +146,49 @@ namespace Database
             // PREPARAMOS EL COMANDO PARA EJECUTAR EL PROCEDIMIENTO ALMACENADO
             SqlCommand comando = new SqlCommand(procedimientoAEjecutar, conexion);
             comando.CommandType = CommandType.StoredProcedure;
+            // EJECUTO EL COMANDO
+            SqlDataReader reader = comando.ExecuteReader();
+            // RECORRO EL RESULTADO Y LO PASO A LA VARIABLE A DEVOLVER
+            while (reader.Read())
+            {
+                // CREO EL COCHE
+                Coche coche = new Coche();
+                coche.id = (long)reader["id"];
+                coche.matricula = reader["matricula"].ToString();
+                coche.color = reader["color"].ToString();
+                coche.cilindrada = (decimal)reader["cilindrada"];
+                coche.nPlazas = (short)reader["nPlazas"];
+                coche.fechaMatriculacion = (DateTime)reader["fechaMatriculacion"];
+                coche.marca = new Marca();
+                coche.marca.id = (long)reader["idMarca"];
+                coche.marca.denominacion = reader["denominacionMarca"].ToString();
+                coche.tipoCombustible = new TipoCombustible();
+                coche.tipoCombustible.id  = (long)reader["idTipoCombustible"];
+                coche.tipoCombustible.denominacion = reader["denominacionTipoCombustible"].ToString();
+                // AÑADO EL COCHE A LA LISTA DE RESULTADOS
+                resultados.Add(coche);
+
+            }
+
+            return resultados;
+        }
+
+        public static List<Coche> DameListaCochesConProcedimientoAlmacenadoPorId(long id)
+        {
+            // CREO EL OBJETO EN EL QUE SE DEVOLVERÁN LOS RESULTADOS
+            List<Coche> resultados = new List<Coche>();
+
+            // PREPARO LA LLAMADA AL PROCEDIMIENTO ALMACENADO
+            string procedimientoAEjecutar = "dbo.GET_COCHE_POR_MARCA_ID";
+
+            // PREPARAMOS EL COMANDO PARA EJECUTAR EL PROCEDIMIENTO ALMACENADO
+            SqlCommand comando = new SqlCommand(procedimientoAEjecutar, conexion);
+            comando.CommandType = CommandType.StoredProcedure;
+            SqlParameter parametroId = new SqlParameter();
+            parametroId.ParameterName = "id";
+            parametroId.SqlDbType = SqlDbType.BigInt;
+            parametroId.SqlValue = id;
+            comando.Parameters.Add(parametroId);
             // EJECUTO EL COMANDO
             SqlDataReader reader = comando.ExecuteReader();
             // RECORRO EL RESULTADO Y LO PASO A LA VARIABLE A DEVOLVER
@@ -285,11 +328,11 @@ namespace Database
         {
             // PREPARO LA CONSULTA SQL PARA INSERTAR AL NUEVO USUARIO
             string consultaSQL = @"UPDATE Users ";
-            consultaSQL += "   SET password = '" + usuario.password + "'";
-            consultaSQL += "      , firstName = '" + usuario.firstName + "'";
-            consultaSQL += "      , lastName = '" + usuario.lastName + "'";
-            consultaSQL += "      , photoUrl = '" + usuario.photoUrl + "'";
-            consultaSQL += "      , searchPreferences = '" + usuario.searchPreferences + "'";
+            consultaSQL += "   SET password = '" + usuario.password +"'";
+            consultaSQL += "      , firstName = '" + usuario.firstName +"'";
+            consultaSQL += "      , lastName = '" + usuario.lastName +"'";
+            consultaSQL += "      , photoUrl = '" + usuario.photoUrl +"'";
+            consultaSQL += "      , searchPreferences = '" + usuario.searchPreferences +"'";
             consultaSQL += "      , status = " + (usuario.status ? "1" : "0");
             consultaSQL += "      , deleted = " + (usuario.deleted ? "1" : "0");
             consultaSQL += "      , isAdmin = " + (usuario.isAdmin ? "1" : "0");
@@ -299,6 +342,84 @@ namespace Database
             SqlCommand comando = new SqlCommand(consultaSQL, conexion);
             // EJECUTO EL COMANDO
             comando.ExecuteNonQuery();
+        }
+
+        public static List<Marca> GetMarcas()
+        {
+            List<Marca> resultado = new List<Marca>();
+
+            // PREPARO EL PROCEDIMIENTO A EJECUTAR
+            string procedimiento = "dbo.GetMarcas";
+            // PREPARO EL COMANDO PARA LA BD
+            SqlCommand comando = new SqlCommand(procedimiento, conexion);
+            // INDICO QUE LO QUE VOY A EJECUTAR ES UN PA
+            comando.CommandType = CommandType.StoredProcedure;
+            // EJECUTO EL COMANDO
+            SqlDataReader reader = comando.ExecuteReader();
+            // PROCESO EL RESULTADO Y LO MENTO EN LA VARIABLE
+            while (reader.Read())
+            {
+                Marca marca = new Marca();
+                marca.id = (long)reader["id"];
+                marca.denominacion = reader["denominacion"].ToString();
+                // añadiro a la lista que voy
+                // a devolver
+                resultado.Add(marca);
+            }
+
+            return resultado;
+        }
+
+        public static List<Marca> GetMarcasPorId(long id)
+        {
+            List<Marca> resultado = new List<Marca>();
+
+            // PREPARO EL PROCEDIMIENTO A EJECUTAR
+            string procedimiento = "dbo.GetMarcasPorId";
+            // PREPARO EL COMANDO PARA LA BD
+            SqlCommand comando = new SqlCommand(procedimiento, conexion);
+            // INDICO QUE LO QUE VOY A EJECUTAR ES UN PA
+            comando.CommandType = CommandType.StoredProcedure;
+            SqlParameter parametroId = new SqlParameter();
+            parametroId.ParameterName = "id";
+            parametroId.SqlDbType = SqlDbType.BigInt;
+            parametroId.SqlValue = id;
+            comando.Parameters.Add(parametroId);
+            // EJECUTO EL COMANDO
+            SqlDataReader reader = comando.ExecuteReader();
+            // PROCESO EL RESULTADO Y LO MENTO EN LA VARIABLE
+            while (reader.Read())
+            {
+                Marca marca = new Marca();
+                marca.id = (long)reader["id"];
+                marca.denominacion = reader["denominacion"].ToString();
+                // añadiro a la lista que voy
+                // a devolver
+                resultado.Add(marca);
+            }
+
+            return resultado;
+        }
+
+        public static List<TipoCombustible> GetTiposCombustibles()
+        {
+            List<TipoCombustible> resultados = new List<TipoCombustible>();
+            string procedimiento = "dbo.GetTiposCombustibles";
+
+            SqlCommand comando = new SqlCommand(procedimiento, conexion);
+
+            SqlDataReader reader = comando.ExecuteReader();
+
+            while (reader.Read())
+            {
+                TipoCombustible tipo = new TipoCombustible();
+                tipo.id = (long)reader["id"];
+                tipo.denominacion = reader["denominacion"].ToString();
+                resultados.Add(tipo);
+            }
+
+
+            return resultados;
         }
     }
 }
