@@ -456,5 +456,45 @@ namespace ApiCarRental
 
            
         }
+
+        public static int EliminarMarca(long id)
+        {
+            string procedimiento = "dbo.EliminarMarca";
+
+            SqlCommand comando = new SqlCommand(procedimiento, conexion);
+            comando.CommandType = CommandType.StoredProcedure;
+            SqlParameter parametro = new SqlParameter();
+            parametro.ParameterName = "id";
+            parametro.SqlDbType = SqlDbType.BigInt;
+            parametro.SqlValue = id;
+
+            comando.Parameters.Add(parametro);
+            int filasAfectadas = comando.ExecuteNonQuery();
+
+            return filasAfectadas;
+        }
+
+        public static int ActualizarMarca(long id, Marca marca)
+        {
+            string procedimiento = "dbo.ActualizarMarca";
+
+            SqlCommand comando = new SqlCommand(procedimiento, conexion);
+            comando.CommandType = CommandType.StoredProcedure;
+            SqlParameter parametro = new SqlParameter();
+            parametro.ParameterName = "id";
+            parametro.SqlDbType = SqlDbType.BigInt;
+            parametro.SqlValue = id;
+            comando.Parameters.Add(parametro);
+
+            SqlParameter parametroDenominacion = new SqlParameter();
+            parametroDenominacion.ParameterName = "denominacion";
+            parametroDenominacion.SqlDbType = SqlDbType.NVarChar;
+            parametroDenominacion.SqlValue = marca.denominacion;
+            comando.Parameters.Add(parametroDenominacion);
+
+            int filasAfectadas = comando.ExecuteNonQuery();
+
+            return filasAfectadas;
+        }
     }
 }
