@@ -110,8 +110,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Images\loading.gif" />
     <Content Include="Views\addMarcas.html" />
+    <Content Include="Views\addTipoCombustible.html" />
     <Content Include="Views\js\marcas.js" />
+    <Content Include="Views\js\tipoCombustible.js" />
     <Content Include="Views\marcas.html" />
     <Content Include="Web.config" />
   </ItemGroup>

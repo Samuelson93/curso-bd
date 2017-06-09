@@ -65,17 +65,90 @@ namespace ApiCarRental.Controllers
         [HttpPost]
         public IHttpActionResult Post([FromBody] Marca marca)
         {
-            return Ok(marca);
-        }
+            RespuestaAPI respuesta = new RespuestaAPI();
+            respuesta.error = "";
+            int filasAfectadas = 0;
+            try
+            {
+                Db.Conectar();
+
+                if (Db.EstaLaConexionAbierta()) 
+                    {
+                    filasAfectadas = Db.AgregarMarca(marca);
+                    }
+                respuesta.totalElementos = filasAfectadas;
+
+                Db.Desconectar();
+            }
+            catch (Exception ex)
+            {
+                respuesta.totalElementos = 0;
+                respuesta.error = "error al agregar la marca";
+
+            }
+
+            return Ok(respuesta);
+        }       
 
         // PUT: api/Marcas/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public IHttpActionResult Put(int id, [FromBody]Marca marca)
         {
+            RespuestaAPI respuesta = new RespuestaAPI();
+            respuesta.error = "";
+            int filasAfectadas = 0;
+            try
+            {
+                Db.Conectar();
+
+                if (Db.EstaLaConexionAbierta())
+                {
+                    filasAfectadas = Db.ActualizarMarca(id,marca);
+                  
+                }
+                respuesta.totalElementos = filasAfectadas;
+
+                Db.Desconectar();
+            }
+            catch (Exception ex)
+            {
+                respuesta.totalElementos = 0;
+                respuesta.error = "error al actualizar la marca";
+
+            }
+
+            return Ok(respuesta);
         }
 
         // DELETE: api/Marcas/5
-        public void Delete(int id)
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
         {
+            RespuestaAPI respuesta = new RespuestaAPI();
+            respuesta.error = "";
+            int filasAfectadas = 0;
+            try
+            {
+                Db.Conectar();
+
+                if (Db.EstaLaConexionAbierta())
+                {
+                    filasAfectadas = Db.EliminarMarca(id);
+                }
+                respuesta.totalElementos = filasAfectadas;
+
+                Db.Desconectar();
+            }
+            catch (Exception ex)
+            {
+                respuesta.totalElementos = 0;
+                respuesta.error = "error al eliminar la marca";
+
+            }
+
+            return Ok(respuesta);
         }
+        
+        
     }
 }
